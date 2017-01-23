@@ -1,6 +1,8 @@
 package com.bhangraboard;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +13,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+
+import java.util.ArrayList;
+
+import static android.os.Build.VERSION_CODES.M;
+import static java.security.AccessController.getContext;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,18 +33,51 @@ public class MainActivity extends AppCompatActivity {
         GridView gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(new ImageAdapter(this));
 
-        Log.d("DEBUG", "onCreate Called!");
+        // Initialize media player objects for playing sound clips.
+        final ArrayList<MediaPlayer> mediaPlayerList = loadSoundClips(new ArrayList<MediaPlayer>());
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Log.d("DEBUG", "OnItemClick Called!");
+
+                // TODO: Remove toast.
                 // Display a toast whenever an item in the gridView is tapped.
                 String displayText = Integer.toString(position);
                 Toast.makeText(MainActivity.this, displayText, Toast.LENGTH_SHORT).show();
+
+                // Play sound clip.
+                MediaPlayer test_mp = mediaPlayerList.get(position);
+                Log.d("DEBUG", test_mp.toString());
+
+
+                MediaPlayer mp = MediaPlayer.create(MainActivity.this, R.raw.one);
+                mp.start();
+
+                // TODO: Swap to black & white image while sound is playing.
             }
         });
+    }
+
+    private ArrayList<MediaPlayer> loadSoundClips(ArrayList<MediaPlayer> mediaPlayerList) {
+
+        // Dynamically load all of the sound clip resources in the raw dir.
+        Field[] fields = R.raw.class.getFields();
+
+        for (Field field : fields) {
+            try {
+                int rawResourceId = field.getInt(null);
+                mediaPlayerList.add(MediaPlayer.create(MainActivity.this, rawResourceId));
+                Log.d("DEBUG", String.format("%s is %d", field.getName(), rawResourceId));
+            } catch(IllegalAccessException e) {
+                Log.e("ERROR", String.format("%s threw IllegalAccessException", field.getName()));
+            } catch(IllegalArgumentException e) {
+                Log.e("ERROR", String.format("%s threw IllegalArgumentException", field.getName()));
+            }
+        }
+
+        return mediaPlayerList;
     }
 
     // This class is responsible for filling the gridView with Bhangra artists.
@@ -78,6 +121,38 @@ public class MainActivity extends AppCompatActivity {
 
         // References to our images of Bhangra artists.
         private Integer[] mThumbIds = {
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
+                R.drawable.one_color,
                 R.drawable.one_color,
                 R.drawable.one_color,
                 R.drawable.one_color,
