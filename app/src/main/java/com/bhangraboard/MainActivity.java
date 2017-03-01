@@ -1,26 +1,24 @@
 package com.bhangraboard;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
-
 import java.util.ArrayList;
-
-import static android.os.Build.VERSION_CODES.M;
-import static java.security.AccessController.getContext;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +56,26 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: Swap to black & white image while sound is playing.
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        Log.d("Tag","running about menu :)");
+
+        // Displaying alert with about information.
+        final Dialog aboutDialog = new Dialog(this);
+        aboutDialog.setContentView(R.layout.about_detail);
+        aboutDialog.setTitle("Questions, Comments?");
+        aboutDialog.show();
+
+        return true;
     }
 
     private ArrayList<MediaPlayer> loadSoundClips(ArrayList<MediaPlayer> mediaPlayerList) {
